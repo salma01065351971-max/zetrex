@@ -1,0 +1,20 @@
+[
+  {
+    "id": "game-keys",
+    "name": "Game Keys",
+    "description": "Official activation keys and in-game credit packs.",
+    "icon": "GAME"
+  },
+  {
+    "id": "software",
+    "name": "Software Licenses",
+    "description": "Productivity, antivirus, and creator software plans.",
+    "icon": "SOFT"
+  },
+  {
+    "id": "streaming",
+    "name": "Subscriptions",
+    "description": "Digital subscriptions and premium account upgrades.",
+    "icon": "SUB"
+  }
+]
