@@ -1,46 +1,36 @@
 import Link from "next/link";
-import { calculateDiscountedPrice } from "../lib/pricing";
-import type { Product } from "../lib/types";
-import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
-import { Card } from "./ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { formatUsd } from "@/lib/utils";
+import type { Product } from "@/lib/types";
 
-type Props = {
+interface ProductCardProps {
   product: Product;
-};
+  discountPercent: number;
+  finalPrice: number;
+}
 
-export function ProductCard({ product }: Props) {
-  const finalPrice = calculateDiscountedPrice(product.price, product.discountPercent);
-  const hasDiscount = product.discountPercent > 0;
-
+export function ProductCard({ product, discountPercent, finalPrice }: ProductCardProps) {
   return (
-    <Card className="group overflow-hidden p-4 transition duration-300 hover:-translate-y-1 hover:border-emerald-400/40">
-      <div
-        className="h-44 w-full rounded-xl border border-white/10 bg-cover bg-center"
-        style={{ backgroundImage: `url(${product.cover})` }}
-      />
-      <div className="mt-4">
-        <p className="text-sm text-muted">{product.slug}</p>
-        <h3 className="mt-1 text-lg font-bold text-foreground">{product.title}</h3>
-        <p className="mt-2 text-sm text-white/70">{product.description}</p>
-      </div>
-      <div className="mt-4 flex items-center gap-2">
-        {hasDiscount ? <Badge>-{product.discountPercent}%</Badge> : null}
-        <p className="text-xl font-extrabold text-emerald-300">${finalPrice.toFixed(2)}</p>
-        {hasDiscount ? (
-          <p className="text-sm text-white/40 line-through">${product.price.toFixed(2)}</p>
-        ) : null}
-      </div>
-      <div className="mt-4 grid grid-cols-2 gap-2">
-        <Link href={`/products/${product.id}`}>
-          <Button variant="outline" className="w-full">
-            View Details
-          </Button>
-        </Link>
-        <Link href={`/products/${product.id}`}>
-          <Button className="w-full">Buy Now</Button>
-        </Link>
-      </div>
+    <Card className="overflow-hidden border-emerald-900/50 bg-gradient-to-b from-emerald-950/40 to-black/80">
+      <div className="h-40 w-full bg-cover bg-center" style={{ backgroundImage: `url(${product.coverImage})` }} />
+      <CardContent className="space-y-3 p-4">
+        <div className="flex items-center justify-between">
+          <Badge>{product.categorySlug.replace("-", " ")}</Badge>
+          {discountPercent > 0 ? <Badge>-{discountPercent}%</Badge> : null}
+        </div>
+        <h3 className="text-lg font-semibold text-white">{product.title}</h3>
+        <p className="line-clamp-2 text-sm text-emerald-50/70">{product.description}</p>
+        <div className="flex items-end justify-between">
+          <div className="space-y-1">
+            {discountPercent > 0 ? <p className="text-xs text-muted-foreground line-through">{formatUsd(product.price)}</p> : null}
+            <p className="text-xl font-bold text-emerald-300">{formatUsd(finalPrice)}</p>
+          </div>
+          <Link href={`/products/${product.id}`} className="rounded-lg bg-emerald-500 px-3 py-2 text-sm font-semibold text-black">
+            View
+          </Link>
+        </div>
+      </CardContent>
     </Card>
   );
 }

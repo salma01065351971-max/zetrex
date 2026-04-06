@@ -1,66 +1,48 @@
 import { promises as fs } from "fs";
 import path from "path";
-import type { Category, Order, Product } from "./types";
+import type { AdminUser, Category, DiscountRule, InventoryRecord, Order, Product } from "@/lib/types";
 
 const dataDir = path.join(process.cwd(), "data");
 
-type DataMap = {
-  products: Product[];
-  categories: Category[];
-  orders: Order[];
-};
-
-function filePath(name: keyof DataMap): string {
-  return path.join(dataDir, `${name}.json`);
-}
-
-async function readJson<T>(name: keyof DataMap): Promise<T> {
-  const content = await fs.readFile(filePath(name), "utf-8");
+async function readJsonFile<T>(fileName: string): Promise<T> {
+  const fullPath = path.join(dataDir, fileName);
+  const content = await fs.readFile(fullPath, "utf8");
   return JSON.parse(content) as T;
 }
 
-async function writeJson<T>(name: keyof DataMap, payload: T): Promise<void> {
-  await fs.mkdir(dataDir, { recursive: true });
-  await fs.writeFile(filePath(name), JSON.stringify(payload, null, 2), "utf-8");
+async function writeJsonFile<T>(fileName: string, payload: T): Promise<void> {
+  const fullPath = path.join(dataDir, fileName);
+  await fs.writeFile(fullPath, JSON.stringify(payload, null, 2), "utf8");
 }
 
-export async function getProducts(): Promise<Product[]> {
-  return readJson<Product[]>("products");
+export async function getCategories() {
+  return readJsonFile<Category[]>("categories.json");
 }
 
-export async function getCategories(): Promise<Category[]> {
-  return readJson<Category[]>("categories");
+export async function getProducts() {
+  return readJsonFile<Product[]>("products.json");
 }
 
-export async function getOrders(): Promise<Order[]> {
-  return readJson<Order[]>("orders");
+export async function getDiscounts() {
+  return readJsonFile<DiscountRule[]>("discounts.json");
 }
 
-export async function addProduct(product: Product): Promise<void> {
-  const current = await getProducts();
-  current.unshift(product);
-  await writeJson("products", current);
+export async function getOrders() {
+  return readJsonFile<Order[]>("orders.json");
 }
 
-export async function deleteProduct(productId: string): Promise<void> {
-  const current = await getProducts();
-  await writeJson(
-    "products",
-    current.filter((product) => product.id !== productId)
-  );
+export async function saveOrders(orders: Order[]) {
+  await writeJsonFile("orders.json", orders);
 }
 
-export async function updateProducts(products: Product[]): Promise<void> {
-  await writeJson("products", products);
+export async function getInventory() {
+  return readJsonFile<InventoryRecord[]>("inventory.json");
 }
 
-export async function addOrder(order: Order): Promise<void> {
-  const current = await getOrders();
-  current.unshift(order);
-  await writeJson("orders", current);
+export async function saveInventory(records: InventoryRecord[]) {
+  await writeJsonFile("inventory.json", records);
 }
 
-export async function getProductById(productId: string): Promise<Product | null> {
-  const products = await getProducts();
-  return products.find((item) => item.id === productId) ?? null;
+export async function getUsers() {
+  return readJsonFile<AdminUser[]>("users.json");
 }

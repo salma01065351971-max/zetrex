@@ -1,22 +1,26 @@
-import { Card } from "../../components/ui/card";
+import Link from "next/link";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-type Props = {
-  searchParams: Promise<{ key?: string }>;
-};
-
-export default async function PurchaseSuccessPage({ searchParams }: Props) {
-  const { key } = await searchParams;
-
+export default async function PurchaseSuccessPage({
+  searchParams
+}: {
+  searchParams: Promise<{ orderId?: string; keyCount?: string }>;
+}) {
+  const { orderId, keyCount } = await searchParams;
   return (
-    <div className="mx-auto max-w-2xl px-4 py-14">
-      <Card className="p-6">
-        <h1 className="text-3xl font-black text-emerald-300">Purchase Completed</h1>
-        <p className="mt-2 text-white/75">
-          Your digital key has been delivered instantly. Save it securely.
-        </p>
-        <div className="mt-5 rounded-xl border border-emerald-400/40 bg-emerald-500/10 p-4 font-mono text-lg">
-          {key ?? "No key found"}
-        </div>
+    <div className="mx-auto max-w-3xl px-4 py-8">
+      <Card className="border-emerald-700/30 bg-black/40">
+        <CardHeader>
+          <CardTitle className="text-3xl text-emerald-300">Purchase Successful</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-emerald-50/80">Your order has been completed and digital assets were delivered to your email.</p>
+          <p className="text-sm text-emerald-100/70">Order ID: {String(orderId || "N/A")}</p>
+          <p className="text-sm text-emerald-100/70">Delivered Keys: {String(keyCount || "0")}</p>
+          <Link href="/" className="inline-block rounded-md bg-emerald-500 px-4 py-2 font-semibold text-black">
+            Continue Shopping
+          </Link>
+        </CardContent>
       </Card>
     </div>
   );

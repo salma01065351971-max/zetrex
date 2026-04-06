@@ -1,0 +1,34 @@
+[
+  {
+    "productId": "prd_1001",
+    "keys": [
+      "VA-IMM-001-ALPHA",
+      "VA-IMM-002-BETA",
+      "VA-IMM-003-GAMMA"
+    ]
+  },
+  {
+    "productId": "prd_1002",
+    "keys": [
+      "ST-50-9001",
+      "ST-50-9002",
+      "ST-50-9003",
+      "ST-50-9004"
+    ]
+  },
+  {
+    "productId": "prd_1003",
+    "keys": [
+      "EAFC26-ULT-1001",
+      "EAFC26-ULT-1002",
+      "EAFC26-ULT-1003"
+    ]
+  },
+  {
+    "productId": "prd_1004",
+    "keys": [
+      "LOL-SMRF-01",
+      "LOL-SMRF-02"
+    ]
+  }
+]

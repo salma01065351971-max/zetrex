@@ -1,20 +1,23 @@
 [
   {
-    "id": "game-keys",
+    "id": "cat_1",
+    "name": "Gaming Accounts",
+    "slug": "accounts",
+    "description": "Ranked and ready-to-play accounts for popular titles.",
+    "active": true
+  },
+  {
+    "id": "cat_2",
+    "name": "Gift Cards",
+    "slug": "gift-cards",
+    "description": "Global and regional gift cards for top platforms.",
+    "active": true
+  },
+  {
+    "id": "cat_3",
     "name": "Game Keys",
-    "description": "Official activation keys and in-game credit packs.",
-    "icon": "GAME"
-  },
-  {
-    "id": "software",
-    "name": "Software Licenses",
-    "description": "Productivity, antivirus, and creator software plans.",
-    "icon": "SOFT"
-  },
-  {
-    "id": "streaming",
-    "name": "Subscriptions",
-    "description": "Digital subscriptions and premium account upgrades.",
-    "icon": "SUB"
+    "slug": "keys",
+    "description": "Official activation keys and bundle offers.",
+    "active": true
   }
 ]

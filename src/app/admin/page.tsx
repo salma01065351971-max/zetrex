@@ -1,4 +1,55 @@
 import Link from "next/link";
+import { logoutAdmin } from "@/app/admin/actions";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getInventory, getOrders, getProducts } from "@/lib/data-store";
+import { requireAdmin } from "@/lib/auth";
+
+export default async function AdminDashboardPage() {
+  await requireAdmin();
+  const [products, orders, inventory] = await Promise.all([getProducts(), getOrders(), getInventory()]);
+  const totalStock = inventory.reduce((sum, row) => sum + row.keys.length, 0);
+
+  return (
+    <div className="mx-auto max-w-6xl space-y-6 px-4 py-8">
+      <div className="flex items-center justify-between">
+        <h1 className="text-3xl font-black text-white">Hidden Admin Dashboard</h1>
+        <form action={logoutAdmin}>
+          <Button variant="outline">Logout</Button>
+        </form>
+      </div>
+      <div className="grid gap-4 md:grid-cols-3">
+        <Card>
+          <CardHeader>
+            <CardTitle>Total Products</CardTitle>
+          </CardHeader>
+          <CardContent>{products.length}</CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Total Orders</CardTitle>
+          </CardHeader>
+          <CardContent>{orders.length}</CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Keys in Inventory</CardTitle>
+          </CardHeader>
+          <CardContent>{totalStock}</CardContent>
+        </Card>
+      </div>
+      <div className="flex gap-3">
+        <Link href="/admin/products" className="rounded-md bg-emerald-500 px-4 py-2 font-semibold text-black">
+          Manage Products
+        </Link>
+        <Link href="/admin/orders" className="rounded-md border border-emerald-700/30 px-4 py-2 font-semibold text-emerald-100">
+          Manage Orders
+        </Link>
+      </div>
+    </div>
+  );
+}
+import Link from "next/link";
 import { logoutAdmin } from "./actions";
 import { Button } from "../../components/ui/button";
 import { Card } from "../../components/ui/card";

@@ -1,59 +1,58 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Button } from "../../../components/ui/button";
-import { Card } from "../../../components/ui/card";
-import { calculateDiscountedPrice } from "../../../lib/pricing";
-import { getProductById } from "../../../lib/data-store";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { getDiscounts, getProducts } from "@/lib/data-store";
+import { applyDiscount, getBestDiscountPercent } from "@/lib/pricing";
+import { formatUsd } from "@/lib/utils";
 
-type Props = {
-  params: Promise<{ id: string }>;
-};
-
-export default async function ProductDetails({ params }: Props) {
+export default async function ProductDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const product = await getProductById(id);
+  const [products, discounts] = await Promise.all([getProducts(), getDiscounts()]);
+  const product = products.find((item) => item.id === id && item.active);
+  if (!product) return notFound();
 
-  if (!product) {
-    notFound();
-  }
-
-  const finalPrice = calculateDiscountedPrice(product.price, product.discountPercent);
+  const discountPercent = getBestDiscountPercent(product, discounts);
+  const finalPrice = applyDiscount(product.price, discountPercent);
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-10">
-      <Card className="grid gap-6 p-6 md:grid-cols-2">
-        <div
-          className="h-72 rounded-2xl border border-white/10 bg-cover bg-center"
-          style={{ backgroundImage: `url(${product.cover})` }}
-        />
-        <div>
-          <p className="text-sm text-emerald-300">{product.slug}</p>
-          <h1 className="mt-2 text-3xl font-black">{product.title}</h1>
-          <p className="mt-4 text-white/75">{product.description}</p>
-          <div className="mt-5 flex items-end gap-2">
-            <p className="text-3xl font-black text-emerald-300">${finalPrice.toFixed(2)}</p>
-            {product.discountPercent > 0 ? (
-              <p className="pb-1 text-sm text-white/40 line-through">
-                ${product.price.toFixed(2)}
-              </p>
-            ) : null}
+    <div className="mx-auto max-w-4xl px-4 py-8">
+      <Card className="border-emerald-700/30 bg-black/40">
+        <CardHeader>
+          <div className="flex flex-wrap items-center gap-3">
+            <Badge>{product.categorySlug}</Badge>
+            {discountPercent > 0 ? <Badge>Season Sale -{discountPercent}%</Badge> : null}
           </div>
-          <p className="mt-2 text-sm text-white/60">
-            Stock: {product.stock} | Available Keys: {product.keys.length}
-          </p>
-          <form action="/api/purchase" method="POST" className="mt-6 space-y-3">
+          <CardTitle className="text-3xl text-white">{product.title}</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <p className="text-emerald-50/80">{product.description}</p>
+          <div className="rounded-lg border border-emerald-900/50 bg-emerald-950/20 p-4">
+            <p className="text-sm text-emerald-50/60">Price</p>
+            {discountPercent > 0 ? <p className="text-sm text-muted-foreground line-through">{formatUsd(product.price)}</p> : null}
+            <p className="text-3xl font-bold text-emerald-300">{formatUsd(finalPrice)}</p>
+          </div>
+
+          <form action="/api/purchase" method="POST" className="space-y-4 rounded-xl border border-emerald-700/20 p-4">
             <input type="hidden" name="productId" value={product.id} />
-            <input
-              required
-              type="email"
-              name="customerEmail"
-              placeholder="customer@email.com"
-              className="h-10 w-full rounded-xl border border-border bg-black/30 px-3"
-            />
-            <Button type="submit" className="w-full">
-              Buy Now
-            </Button>
+            <div className="space-y-2">
+              <Label htmlFor="email">Buyer Email</Label>
+              <Input id="email" name="email" type="email" required placeholder="your@email.com" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="quantity">Quantity</Label>
+              <Input id="quantity" name="quantity" type="number" min={1} max={10} defaultValue={1} required />
+            </div>
+            <Button type="submit">Purchase Now</Button>
           </form>
-        </div>
+
+          <Link href="/" className="inline-block text-sm text-emerald-300 hover:underline">
+            Back to marketplace
+          </Link>
+        </CardContent>
       </Card>
     </div>
   );

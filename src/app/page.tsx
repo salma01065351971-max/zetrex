@@ -1,45 +1,42 @@
-import { ProductCard } from "../components/product-card";
-import { Badge } from "../components/ui/badge";
-import { Card } from "../components/ui/card";
-import { getCategories, getProducts } from "../lib/data-store";
+import { ProductCard } from "@/components/product-card";
+import { getCategories, getDiscounts, getProducts } from "@/lib/data-store";
+import { applyDiscount, getBestDiscountPercent } from "@/lib/pricing";
 
 export default async function HomePage() {
-  const [products, categories] = await Promise.all([getProducts(), getCategories()]);
-  const featured = products.filter((item) => item.featured);
+  const [products, categories, discounts] = await Promise.all([getProducts(), getCategories(), getDiscounts()]);
+  const activeCategories = categories.filter((category) => category.active);
+  const activeProducts = products.filter((product) => product.active);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 pb-16 pt-8">
-      <section className="relative overflow-hidden rounded-3xl border border-emerald-400/30 bg-white/5 p-8 shadow-glass">
-        <div className="absolute -right-10 -top-12 h-44 w-44 rounded-full bg-emerald-400/20 blur-3xl" />
-        <Badge>Trusted Digital Marketplace</Badge>
-        <h1 className="mt-4 max-w-3xl text-4xl font-black leading-tight text-white md:text-6xl">
-          ZETREX MARKET - Instant Delivery for Premium Digital Products
-        </h1>
-        <p className="mt-4 max-w-2xl text-white/75">
-          Explore game keys, software subscriptions, and exclusive digital bundles
-          with secure checkout and instant key delivery.
+    <div className="mx-auto max-w-6xl space-y-10 px-4 py-8">
+      <section className="rounded-2xl border border-emerald-600/30 bg-gradient-to-r from-emerald-700/20 to-emerald-500/5 p-8">
+        <p className="text-xs uppercase tracking-[0.24em] text-emerald-200">Production-Ready Storefront</p>
+        <h1 className="mt-2 text-4xl font-black tracking-tight text-white md:text-5xl">ZETREX MARKET</h1>
+        <p className="mt-4 max-w-2xl text-emerald-50/80">
+          Premium destination for gaming accounts, gift cards, and activation keys. Secure delivery, instant purchase, and seasonal discounts.
         </p>
       </section>
 
-      <section className="mt-10">
-        <h2 className="text-2xl font-bold">Featured Categories</h2>
+      <section>
+        <h2 className="text-2xl font-bold text-white">Dynamic Categories</h2>
         <div className="mt-4 grid gap-4 md:grid-cols-3">
-          {categories.map((category) => (
-            <Card key={category.id} className="p-5">
-              <p className="text-2xl">{category.icon}</p>
-              <h3 className="mt-2 text-xl font-semibold">{category.name}</h3>
-              <p className="mt-1 text-sm text-white/70">{category.description}</p>
-            </Card>
+          {activeCategories.map((category) => (
+            <div key={category.id} className="rounded-xl border border-emerald-700/30 bg-black/40 p-4">
+              <p className="font-semibold text-emerald-300">{category.name}</p>
+              <p className="mt-2 text-sm text-emerald-50/70">{category.description}</p>
+            </div>
           ))}
         </div>
       </section>
 
-      <section className="mt-12">
-        <h2 className="text-2xl font-bold">Featured Products</h2>
-        <div className="mt-4 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {featured.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+      <section>
+        <h2 className="text-2xl font-bold text-white">Featured Digital Products</h2>
+        <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {activeProducts.map((product) => {
+            const discountPercent = getBestDiscountPercent(product, discounts);
+            const finalPrice = applyDiscount(product.price, discountPercent);
+            return <ProductCard key={product.id} product={product} discountPercent={discountPercent} finalPrice={finalPrice} />;
+          })}
         </div>
       </section>
     </div>

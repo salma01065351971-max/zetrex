@@ -1,49 +1,18 @@
 "use server";
 
+import { promises as fs } from "fs";
+import path from "path";
 import { revalidatePath } from "next/cache";
-import { addProduct, deleteProduct as removeProduct, getProducts, updateProducts } from "../../../lib/data-store";
-import type { Product } from "../../../lib/types";
+import type { Product } from "@/lib/types";
 
-export async function createProduct(formData: FormData): Promise<void> {
-  const keysRaw = String(formData.get("keys") ?? "");
-  const keys = keysRaw
-    .split("\n")
-    .map((item) => item.trim())
-    .filter(Boolean);
+const filePath = path.join(process.cwd(), "data", "products.json");
 
-  const product: Product = {
-    id: crypto.randomUUID(),
-    title: String(formData.get("title") ?? ""),
-    slug: String(formData.get("slug") ?? ""),
-    description: String(formData.get("description") ?? ""),
-    categoryId: String(formData.get("categoryId") ?? ""),
-    cover: String(formData.get("cover") ?? ""),
-    price: Number(formData.get("price") ?? 0),
-    discountPercent: Number(formData.get("discountPercent") ?? 0),
-    stock: Number(formData.get("stock") ?? 0),
-    keys,
-    featured: String(formData.get("featured") ?? "") === "on"
-  };
-
-  await addProduct(product);
+export async function toggleProductStatus(formData: FormData) {
+  const productId = String(formData.get("productId") || "");
+  const raw = await fs.readFile(filePath, "utf8");
+  const products = JSON.parse(raw) as Product[];
+  const next = products.map((item) => (item.id === productId ? { ...item, active: !item.active } : item));
+  await fs.writeFile(filePath, JSON.stringify(next, null, 2), "utf8");
   revalidatePath("/");
-  revalidatePath("/admin");
-  revalidatePath("/admin/products");
-}
-
-export async function deleteProduct(formData: FormData): Promise<void> {
-  const productId = String(formData.get("productId") ?? "");
-  await removeProduct(productId);
-  revalidatePath("/");
-  revalidatePath("/admin");
-  revalidatePath("/admin/products");
-}
-
-export async function syncInventoryFromKeys(): Promise<void> {
-  const products = await getProducts();
-  const updated = products.map((item) => ({ ...item, stock: item.keys.length }));
-  await updateProducts(updated);
-  revalidatePath("/");
-  revalidatePath("/admin");
   revalidatePath("/admin/products");
 }

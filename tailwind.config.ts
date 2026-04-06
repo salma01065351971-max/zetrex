@@ -6,28 +6,23 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#050807",
-        foreground: "#eefcf4",
-        card: "#0b1612",
-        primary: "#10b981",
-        muted: "#8ab9a4",
-        border: "#1d3b31"
-      },
-      boxShadow: {
-        glass: "0 20px 80px rgba(16, 185, 129, 0.16)"
-      },
-      backgroundImage: {
-        radial:
-          "radial-gradient(circle at top, rgba(16,185,129,0.25), transparent 45%)"
-      },
-      keyframes: {
-        glow: {
-          "0%, 100%": { boxShadow: "0 0 25px rgba(16,185,129,0.25)" },
-          "50%": { boxShadow: "0 0 45px rgba(16,185,129,0.45)" }
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))"
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))"
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))"
         }
-      },
-      animation: {
-        glow: "glow 3s ease-in-out infinite"
       }
     }
   },

@@ -1,31 +1,38 @@
-import { loginAdmin } from "../actions";
-import { Button } from "../../../components/ui/button";
-import { Card } from "../../../components/ui/card";
-import { Input } from "../../../components/ui/input";
-import { Label } from "../../../components/ui/label";
+import { loginAdmin } from "@/app/admin/actions";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 
-type Props = {
+export default async function AdminLoginPage({
+  searchParams
+}: {
   searchParams: Promise<{ error?: string }>;
-};
-
-export default async function AdminLoginPage({ searchParams }: Props) {
+}) {
   const { error } = await searchParams;
 
   return (
-    <div className="mx-auto flex min-h-[70vh] max-w-md items-center px-4 py-10">
-      <Card className="w-full p-6">
-        <h1 className="text-2xl font-black">Admin Login</h1>
-        <p className="mt-1 text-sm text-white/65">Enter dashboard password to continue.</p>
-        <form action={loginAdmin} className="mt-6 space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="password">Strong Password</Label>
-            <Input id="password" name="password" type="password" required />
-          </div>
-          {error ? <p className="text-sm text-red-400">{error}</p> : null}
-          <Button type="submit" className="w-full">
-            Sign in
-          </Button>
-        </form>
+    <div className="mx-auto max-w-md px-4 py-10">
+      <Card className="border-emerald-700/30 bg-black/40">
+        <CardHeader>
+          <CardTitle className="text-2xl text-white">Admin Access</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {error ? <p className="text-sm text-red-400">Invalid credentials.</p> : null}
+          <form action={loginAdmin} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="username">Username</Label>
+              <Input id="username" name="username" required />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <Input id="password" name="password" type="password" required />
+            </div>
+            <Button type="submit" className="w-full">
+              Sign In
+            </Button>
+          </form>
+        </CardContent>
       </Card>
     </div>
   );

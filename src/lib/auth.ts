@@ -1,14 +1,30 @@
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-export const ADMIN_SESSION_COOKIE = "zetrex_admin_session";
-const DEFAULT_ADMIN_PASSWORD = "Zetrex@Admin#2026!Secure";
+const ADMIN_COOKIE = "zetrex_admin_session";
 
-export function getAdminPassword(): string {
-  return process.env.ADMIN_PASSWORD ?? DEFAULT_ADMIN_PASSWORD;
+export async function isAdminAuthenticated() {
+  const cookieStore = await cookies();
+  return cookieStore.get(ADMIN_COOKIE)?.value === "active";
 }
 
-export async function isAdminAuthenticated(): Promise<boolean> {
+export async function requireAdmin() {
+  const ok = await isAdminAuthenticated();
+  if (!ok) redirect("/admin/login");
+}
+
+export async function createAdminSession() {
   const cookieStore = await cookies();
-  const value = cookieStore.get(ADMIN_SESSION_COOKIE)?.value;
-  return value === "active";
+  cookieStore.set(ADMIN_COOKIE, "active", {
+    httpOnly: true,
+    sameSite: "strict",
+    secure: false,
+    path: "/",
+    maxAge: 60 * 60 * 6
+  });
+}
+
+export async function clearAdminSession() {
+  const cookieStore = await cookies();
+  cookieStore.delete(ADMIN_COOKIE);
 }
