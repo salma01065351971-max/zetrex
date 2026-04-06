@@ -1,13 +1,22 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+
+const ADMIN_COOKIE = "zetrex_admin";
 
 export function middleware(request: NextRequest) {
-  const response = NextResponse.next();
-  response.headers.set("x-project-name", "zetrex-market");
-  response.headers.set("x-admin-hidden-route", request.nextUrl.pathname.startsWith("/admin") ? "true" : "false");
-  return response;
+  const pathname = request.nextUrl.pathname;
+
+  if (!pathname.startsWith("/admin") || pathname.startsWith("/admin/login")) {
+    return NextResponse.next();
+  }
+
+  const authenticated = request.cookies.get(ADMIN_COOKIE)?.value === "authenticated";
+  if (!authenticated) {
+    return NextResponse.redirect(new URL("/admin/login", request.url));
+  }
+
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"]
+  matcher: ["/admin/:path*"]
 };

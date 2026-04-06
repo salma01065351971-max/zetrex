@@ -1,8 +1,7 @@
 [
   {
-    "id": "usr_1",
-    "username": "zetrex-admin",
-    "password": "ZxAdmin#2026",
-    "role": "superadmin"
+    "username": "admin",
+    "password": "admin123",
+    "role": "admin"
   }
 ]

@@ -1,23 +1,5 @@
 [
-  {
-    "id": "cat_1",
-    "name": "Gaming Accounts",
-    "slug": "accounts",
-    "description": "Ranked and ready-to-play accounts for popular titles.",
-    "active": true
-  },
-  {
-    "id": "cat_2",
-    "name": "Gift Cards",
-    "slug": "gift-cards",
-    "description": "Global and regional gift cards for top platforms.",
-    "active": true
-  },
-  {
-    "id": "cat_3",
-    "name": "Game Keys",
-    "slug": "keys",
-    "description": "Official activation keys and bundle offers.",
-    "active": true
-  }
+  "Action RPG",
+  "Racing",
+  "Survival"
 ]

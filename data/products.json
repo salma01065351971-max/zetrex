@@ -1,54 +1,51 @@
 [
   {
-    "id": "prd_1001",
-    "title": "Valorant Immortal Account",
-    "slug": "valorant-immortal-account",
-    "categorySlug": "accounts",
-    "description": "High-rank competitive account with premium skins and verified clean history.",
-    "price": 120.0,
-    "coverImage": "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1200&auto=format&fit=crop",
-    "featured": true,
-    "active": true,
-    "rating": 4.9,
-    "reviewsCount": 152
+    "id": "prod-cyber-01",
+    "slug": "cyber-shadow-ultimate",
+    "title": "Cyber Shadow: Ultimate Edition",
+    "description": "Story-rich cyberpunk action RPG bundle with all DLC and soundtrack.",
+    "image": "https://images.unsplash.com/photo-1542751110-97427bbecf20?auto=format&fit=crop&w=1400&q=80",
+    "price": 39.99,
+    "category": "Action RPG",
+    "platform": "PC",
+    "stock": 3,
+    "keys": [
+      "CYBR-ULTM-AAA1-BBB2-CCC3",
+      "CYBR-ULTM-DDD4-EEE5-FFF6",
+      "CYBR-ULTM-GGG7-HHH8-III9"
+    ],
+    "soldKeys": []
   },
   {
-    "id": "prd_1002",
-    "title": "Steam Gift Card $50",
-    "slug": "steam-gift-card-50",
-    "categorySlug": "gift-cards",
-    "description": "Instant-delivery Steam wallet code suitable for global activation.",
-    "price": 50.0,
-    "coverImage": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1200&auto=format&fit=crop",
-    "featured": true,
-    "active": true,
-    "rating": 4.8,
-    "reviewsCount": 211
+    "id": "prod-racing-02",
+    "slug": "neon-rush-premium",
+    "title": "Neon Rush Premium Pack",
+    "description": "High-speed futuristic racer with premium cars and competitive seasons.",
+    "image": "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1400&q=80",
+    "price": 24.99,
+    "category": "Racing",
+    "platform": "PC",
+    "stock": 2,
+    "keys": [
+      "NEON-RUSH-AAA1-BBB2-CCC3",
+      "NEON-RUSH-DDD4-EEE5-FFF6"
+    ],
+    "soldKeys": []
   },
   {
-    "id": "prd_1003",
-    "title": "EA FC 26 Ultimate Key",
-    "slug": "ea-fc-26-ultimate-key",
-    "categorySlug": "keys",
-    "description": "Official digital key for EA FC 26 Ultimate Edition.",
-    "price": 84.99,
-    "coverImage": "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=1200&auto=format&fit=crop",
-    "featured": true,
-    "active": true,
-    "rating": 4.7,
-    "reviewsCount": 93
-  },
-  {
-    "id": "prd_1004",
-    "title": "League of Legends Smurf Pack",
-    "slug": "lol-smurf-pack",
-    "categorySlug": "accounts",
-    "description": "Fresh account pack with ready leveling and secure ownership transfer details.",
-    "price": 35.0,
-    "coverImage": "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=1200&auto=format&fit=crop",
-    "featured": false,
-    "active": true,
-    "rating": 4.6,
-    "reviewsCount": 65
+    "id": "prod-survival-03",
+    "slug": "dark-signal-deluxe",
+    "title": "Dark Signal Deluxe",
+    "description": "Hardcore survival shooter with co-op mode and advanced weapon skins.",
+    "image": "https://images.unsplash.com/photo-1547394765-185e1e68f34e?auto=format&fit=crop&w=1400&q=80",
+    "price": 29.99,
+    "category": "Survival",
+    "platform": "PC",
+    "stock": 2,
+    "keys": [
+      "DRKS-SIGN-AAA1-BBB2-CCC3",
+      "DRKS-SIGN-DDD4-EEE5-FFF6"
+    ],
+    "soldKeys": []
   }
 ]
